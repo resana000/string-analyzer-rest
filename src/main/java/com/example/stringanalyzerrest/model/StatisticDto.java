@@ -1,12 +1,14 @@
 package com.example.stringanalyzerrest.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Map;
 
 @Entity
+@Data
 @ToString
 @AllArgsConstructor
 public class StatisticDto {
@@ -22,6 +24,9 @@ public class StatisticDto {
     @ElementCollection
     Map<Character, Integer> charContinuousCountMap;
     int count;
+
+    @OneToOne
+    RequestStringParsedStore requestStringParsedStore;
 
     public StatisticDto() {
 

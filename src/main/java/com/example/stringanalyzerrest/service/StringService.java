@@ -7,6 +7,7 @@ import com.example.stringanalyzerrest.repo.StatisticRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
@@ -18,6 +19,7 @@ public class StringService {
     @Autowired
     StatisticRepository statisticRepository;
 
+    @Transactional
     public RequestStringParsedStore calculateAndSave(String str) {
         RequestStringParsedStore requestStringParsedStore = new RequestStringParsedStore();
         requestStringParsedStore.setNaturalId(new Date().toString() + UUID.randomUUID());
@@ -43,7 +45,11 @@ public class StringService {
                 }
             }
         }
-        return statisticRepository.save(new StatisticDto(charCountMap, charContinuousCountMap, str.length()));
+        StatisticDto statisticDto = new StatisticDto();
+        statisticDto.setCharCountMap(charCountMap);
+        statisticDto.setCharContinuousCountMap(charContinuousCountMap);
+        statisticDto.setCount(str.length());
+        return statisticRepository.save(statisticDto);
     }
 
     public List<RequestStringParsedStore> getAll() {
